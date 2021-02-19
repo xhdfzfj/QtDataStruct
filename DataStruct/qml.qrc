@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>XhdToolBar.qml</file>
+        <file>images/toolbutton.png</file>
+        <file>images/toolbutton.sci</file>
+        <file>CjsonGui.qml</file>
     </qresource>
 </RCC>

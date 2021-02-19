@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+build-DataStruct-Desktop_Qt_5_15_2_GCC_64bit-Debug/
+
+build-DataStruct-Desktop_Qt_5_15_2_GCC_64bit-Profile/
+
+build-DataStruct-Desktop_Qt_5_15_2_GCC_64bit-Release/
