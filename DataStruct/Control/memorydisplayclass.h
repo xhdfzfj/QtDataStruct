@@ -4,6 +4,8 @@
 #include <QPixmap>
 #include <qqml.h>
 #include <QtQuick/QQuickPaintedItem>
+#include <QList>
+#include "../Class/drawelementclass.h"
 
 class MemoryDisplayClass : public QQuickPaintedItem
 {
@@ -24,13 +26,20 @@ private:
     uint8_t * mMemoryBlockP;
     uint32_t mMemotryBlockSize;
     QPixmap * mDisplayMapP;
+    bool mFontSetFlag;
+    QList< DrawElementClass * > mDisplayElementS;
+    QFont mDisplayFont;
+    int mPerFontSize;
+    int mOffsetLabelSize;
+    int mRowFontCount;
+    int mRowHeight;
 
     /***********************************
      * 函数定义
      * ********************************/
 public:
     MemoryDisplayClass( QQuickItem * pParent = nullptr );
-    virtual ~MemoryDisplayClass();
+    virtual ~MemoryDisplayClass() override;
 
     void sub_SetWidth( int pWdith );
     void sub_SetHeight( int pHeight );
@@ -38,12 +47,13 @@ public:
 private:
     void sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t pSize );
     QSize fun_CalcMemoryToBitmapSize( uint32_t pMemorySize, int pWdith );
+    void sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint32_t pDataSize, QSize pDestSize );
 
     /*********************************
      * 系统重载
      * ******************************/
 public:
-    void paint( QPainter *painter );
+    void paint( QPainter *painter ) override;
 
 signals:
 
