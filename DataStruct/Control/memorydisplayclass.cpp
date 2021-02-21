@@ -1,16 +1,10 @@
 ﻿#include <QDebug>
 #include <QFontMetrics>
-<<<<<<< main
-#include <strstream>
-#include <iomanip>
-=======
-<<<<<<< 7099b95a1e0a522b7f3f003a54bdf5f529201b21
-=======
 #include <QPainter>
 #include <strstream>
 #include <iomanip>
->>>>>>> 内存显示完成了
->>>>>>> 内存显示完成了
+#include <strstream>
+#include <iomanip>
 #include "../XhdDefine.h"
 #include "../Common.h"
 #include "memorydisplayclass.h"
@@ -30,16 +24,11 @@ MemoryDisplayClass::MemoryDisplayClass( QQuickItem * pParent ) : QQuickPaintedIt
     mMemoryBlockP = nullptr;
     mTempDataP = nullptr;
     mDisplayMapP = nullptr;
-<<<<<<< main
-    mFontSetFlag = false;
-=======
-<<<<<<< 7099b95a1e0a522b7f3f003a54bdf5f529201b21
-=======
     mFontSetFlag = false;
 
     sub_SignalsConnect();
->>>>>>> 内存显示完成了
->>>>>>> 内存显示完成了
+
+    mFontSetFlag = false;
 }
 
 /**
@@ -123,19 +112,10 @@ void MemoryDisplayClass::sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t
         {
             delete mTempDataP;
             mTempDataP = new uint8_t [ pDataSize ];
-<<<<<<< main
-
-        }
-        memset( mTempDataP, 0x01, pDataSize );
-=======
             memset( mTempDataP, 0xFF, pDataSize );
         }
-<<<<<<< 7099b95a1e0a522b7f3f003a54bdf5f529201b21
-
-=======
         memset( mTempDataP, 0x91, pDataSize );
->>>>>>> 内存显示完成了
->>>>>>> 内存显示完成了
+
         mMemoryBlockP = mTempDataP;
         mMemotryBlockSize = pDataSize;
     }
@@ -156,18 +136,12 @@ void MemoryDisplayClass::sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t
     }
 
     mDisplayMapP = new QPixmap( _tmpSize );
-<<<<<<< main
 
-    sub_CreateMemoryDisplayElementS( mMemoryBlockP, mMemotryBlockSize, _tmpSize );
-=======
-<<<<<<< 7099b95a1e0a522b7f3f003a54bdf5f529201b21
-=======
     setHeight( _tmpSize.height() );
     mHeight = _tmpSize.height();
 
     sub_CreateMemoryDisplayElementS( mMemoryBlockP, mMemotryBlockSize, _tmpSize );
->>>>>>> 内存显示完成了
->>>>>>> 内存显示完成了
+
 }
 
 /**
@@ -245,11 +219,7 @@ QSize MemoryDisplayClass::fun_CalcMemoryToBitmapSize( uint32_t pMemorySize, int 
     return _retSize;
 }
 
-<<<<<<< main
-=======
-<<<<<<< 7099b95a1e0a522b7f3f003a54bdf5f529201b21
-=======
->>>>>>> 内存显示完成了
+
 /**
  * @brief MemoryDisplayClass::sub_CreateMemoryDisplayElementS
  *      根据内存的大小生成显示元素
@@ -266,13 +236,6 @@ void MemoryDisplayClass::sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint
     uint32_t i, _tmpU32Value;
     QFontMetrics _tmpFontMetrics( mDisplayFont );
     QString _tmpStr;
-<<<<<<< main
-    string _tmpStdStr;
-    strstream _strStream;
-    int _row;
-
-    i = 0;
-=======
 
     int _row;
 
@@ -282,7 +245,7 @@ void MemoryDisplayClass::sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint
     i = 0;
     _y = 0;
     _x = 0;
->>>>>>> 内存显示完成了
+
     _row = -1;
     while( i < pDataSize )
     {
@@ -293,25 +256,6 @@ void MemoryDisplayClass::sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint
             _tmpRectP = new QRect( 0, _row * mRowHeight, mOffsetLabelSize, mRowHeight );
             _tmpU32Value = _row * mRowFontCount;
 
-<<<<<<< main
-            _strStream << std::hex << std::setw( 8 ) << std::setfill( '0' ) << _tmpU32Value << std::ends;
-            _tmpStdStr = _strStream.str();
-            _strStream.clear();
-
-            _tmpStr = QString::fromStdString( _tmpStdStr );
-
-            _tmpDrawObjP = new DrawElementClass( *_tmpRectP, _tmpStr );
-        }
-        _tmpU32Value = static_cast< uint32_t >( pDataP[ i ] );
-        _strStream << std::hex << std::setw( 2 ) << std::setfill( '0' ) << _tmpU32Value << std::ends;
-        _tmpStdStr = _strStream.str();
-        _strStream.clear();
-
-        _tmpStr = QString::fromStdString( _tmpStdStr );
-    }
-}
-
-=======
             sub_IntToHex( _tmpU32Value, _tmpStr, 8 );
             _tmpStr += ":";
             _tmpDrawObjP = new DrawElementClass( *_tmpRectP, _tmpStr, ColorFlag::BLUE );
@@ -367,8 +311,6 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
     }
 }
 
->>>>>>> 内存显示完成了
->>>>>>> 内存显示完成了
 
 /**
  * @brief MemoryDisplayClass::paint

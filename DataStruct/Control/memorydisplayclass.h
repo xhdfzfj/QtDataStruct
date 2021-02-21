@@ -48,15 +48,10 @@ private:
     void sub_SignalsConnect( void );
     void sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t pSize );
     QSize fun_CalcMemoryToBitmapSize( uint32_t pMemorySize, int pWdith );
-<<<<<<< main
-    void sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint32_t pDataSize, QSize pDestSize );
-=======
-<<<<<<< 7099b95a1e0a522b7f3f003a54bdf5f529201b21
-=======
+
     void sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint32_t pDataSize, QSize pDestSize );
     void sub_DrawElementsToPixmap( void );
->>>>>>> 内存显示完成了
->>>>>>> 内存显示完成了
+
 
     /*********************************
      * 系统重载
