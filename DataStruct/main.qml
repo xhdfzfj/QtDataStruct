@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+import xhd.memory.drawitem 1.0
 
 ApplicationWindow {
     width: 1024
@@ -35,18 +36,23 @@ ApplicationWindow {
                         mainColumLayout.changeViewToCjson();
                     }
                 }
+                Button
+                {
+                    id:debugBut
+                    anchors.left:cJsonBut.right
+                    anchors.leftMargin: 5
+                    text:qsTr("测试")
+                }
             }
         }
 
         ScrollView
         {
             id:mainScrollView
-            objectName: mainScrollViewObj
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: parent.height - topToolButtonRect.height
-
-
         }
+
 
         property var cjsonGuiObj;
         property var cjsionItemObj;
@@ -58,12 +64,10 @@ ApplicationWindow {
             {
                 console.log( "createComponent ready" );
 
-                cjsionItemObj = cjsonGuiObj.createObject( mainScrollView.contentItem );
-                //cjsionItemObj.cjsonRectWidth = mainScrollView.width;
-                //cjsionItemObj.cjsonRectHeight = 100;
+                cjsionItemObj = cjsonGuiObj.createObject( mainScrollView );
+                mainScrollView.contentItem = cjsionItemObj;
 
                 cjsionItemObj.memoryDrawWidth = mainScrollView.width;
-                cjsionItemObj.memoryDrawHeight = 200;
             }
         }
     }

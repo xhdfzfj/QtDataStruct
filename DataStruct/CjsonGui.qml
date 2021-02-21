@@ -17,6 +17,10 @@ Item
         XhdMemoryDrawItem
         {
             id:memoryDrawItem
+            onWidthChanged:
+            {
+                console.log( qsTr("width size change") );
+            }
         }
     //}
 
