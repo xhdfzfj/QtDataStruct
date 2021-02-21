@@ -1,6 +1,6 @@
-QT += quick gui
+QT += quick
 
-CONFIG += c++11 qmltypes
+CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -8,6 +8,7 @@ CONFIG += c++11 qmltypes
 
 SOURCES += \
         Class/drawelementclass.cpp \
+        Common.cpp \
         Control/guicontrolclass.cpp \
         Control/memorydisplayclass.cpp \
         main.cpp
@@ -30,6 +31,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     Class/drawelementclass.h \
+    Common.h \
     Control/guicontrolclass.h \
     Control/memorydisplayclass.h \
     XhdDefine.h
