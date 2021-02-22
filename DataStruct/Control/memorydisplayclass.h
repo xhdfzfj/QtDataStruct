@@ -14,7 +14,7 @@ class MemoryDisplayClass : public QQuickPaintedItem
     QML_ELEMENT
     #endif
 
-    Q_PROPERTY( int mMemoryItemWidth READ fun_ItemWidth WRITE sub_SetWidth NOTIFY MemoryItemWidthChanged )
+    Q_PROPERTY( int mMemoryItemWidth  WRITE sub_SetWidth /*NOTIFY MemoryItemWidthChanged*/ )
     Q_PROPERTY( int mMemoryItemHeight WRITE sub_SetHeight )
 
     /***********************************
