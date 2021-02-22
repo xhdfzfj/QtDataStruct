@@ -49,10 +49,11 @@ ApplicationWindow {
         ScrollView
         {
             id:mainScrollView
+            clip: true
             Layout.preferredWidth: parent.width
+
             Layout.preferredHeight: parent.height - topToolButtonRect.height
-            //contentWidth: 20000
-            //contentHeight: 4000
+
             onWidthChanged:
             {
                 console.log( "ScrollView width chanage" );
@@ -65,9 +66,9 @@ ApplicationWindow {
                 mainColumLayout.sizeChanageLinkAction( 1 );
             }
 
-            Component.onCompleted:
+            XhdMemoryDrawItem
             {
-                contentHeight = 5000;
+                id:memoryDrawItem
             }
         }
 
@@ -81,22 +82,25 @@ ApplicationWindow {
         function changeViewToCjson()
         {
             console.log( "changeViewToCjson" );
-            cjsonGuiObj = Qt.createComponent( "CjsonGui.qml" );
             currentContentItemType = 1;
-            if( cjsonGuiObj.status === Component.Ready )
-            {
-                console.log( "createComponent ready" );
+//            cjsonGuiObj = Qt.createComponent( "CjsonGui.qml" );
+//            currentContentItemType = 1;
+//            if( cjsonGuiObj.status === Component.Ready )
+//            {
+//                console.log( "createComponent ready" );
 
-                cjsonItemObj = cjsonGuiObj.createObject( mainScrollView );
-                mainScrollView.contentItem = cjsonItemObj;
+//                cjsonItemObj = cjsonGuiObj.createObject( mainScrollView );
+//                mainScrollView.contentItem = cjsonItemObj;
+//                mainScrollView.contentItem.parent = mainScrollView;
 
-                cjsonItemObj.memoryDrawWidth = mainScrollView.width;
-                mainScrollView.update();
-            }
-            else
-            {
-                console.log( "createComponent error" );
-            }
+//                cjsonItemObj.memoryDrawWidth = mainScrollView.width;
+//                mainScrollView.update();
+//            }
+//            else
+//            {
+//                console.log( "createComponent error" );
+//            }
+            memoryDrawItem.mMemoryItemWidth = mainScrollView.width;
         }
 
 
@@ -111,14 +115,15 @@ ApplicationWindow {
             {
                 if( currentContentItemType === 1 )  //使用cjson的内存显示方式
                 {
-                    if( cjsonItemObj !== undefined )
-                    {
-                        if( pSizeChangeType === 0 )
-                        {
-                            cjsonItemObj.memoryDrawWidth = mainScrollView.width;
+//                    if( cjsonItemObj !== undefined )
+//                    {
+//                        if( pSizeChangeType === 0 )
+//                        {
+//                            cjsonItemObj.memoryDrawWidth = mainScrollView.width;
 
-                        }
-                    }
+//                        }
+//                    }
+                    memoryDrawItem.mMemoryItemWidth = mainScrollView.width;
                 }
             }
         }
