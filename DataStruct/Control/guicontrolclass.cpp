@@ -1,4 +1,4 @@
-#include "guicontrolclass.h"
+﻿#include "guicontrolclass.h"
 
 /**
  * @brief GuiControlClass::GuiControlClass
@@ -36,5 +36,5 @@ void GuiControlClass::sub_ActiveCLanguageJsonBut()
  */
 void GuiControlClass::guiCLanguageJsonButClickSlot()
 {
-    qDebug( "test test test" );
+    qDebug( "guiCLanguageJsonButClickSlot" );
 }

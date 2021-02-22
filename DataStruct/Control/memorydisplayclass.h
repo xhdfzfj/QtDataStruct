@@ -14,7 +14,7 @@ class MemoryDisplayClass : public QQuickPaintedItem
     QML_ELEMENT
     #endif
 
-    Q_PROPERTY( int mMemoryItemWidth WRITE sub_SetWidth )
+    Q_PROPERTY( int mMemoryItemWidth READ fun_ItemWidth WRITE sub_SetWidth NOTIFY MemoryItemWidthChanged )
     Q_PROPERTY( int mMemoryItemHeight WRITE sub_SetHeight )
 
     /***********************************
@@ -44,23 +44,30 @@ public:
     void sub_SetWidth( int pWdith );
     void sub_SetHeight( int pHeight );
 
+    int fun_ItemWidth(){ return 4000; }
+
 private:
     void sub_SignalsConnect( void );
     void sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t pSize );
     QSize fun_CalcMemoryToBitmapSize( uint32_t pMemorySize, int pWdith );
-
     void sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint32_t pDataSize, QSize pDestSize );
     void sub_DrawElementsToPixmap( void );
+    void sub_ClearDisplayElementS( void );
 
+    /********************************
+     * 信号与槽部份
+     * *****************************/
+
+signals:
+    void MemoryItemWidthChanged();
+public slots:
+    void sub_WidthChangeSlot();
 
     /*********************************
      * 系统重载
      * ******************************/
 public:
     void paint( QPainter *painter ) override;
-
-public slots:
-    void sub_WidthChangeSlot();
 
 signals:
 

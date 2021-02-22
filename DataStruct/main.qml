@@ -1,4 +1,4 @@
-import QtQuick 2.12
+﻿import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import xhd.memory.drawitem 1.0
@@ -7,7 +7,7 @@ ApplicationWindow {
     width: 1024
     height: 768
     visible: true
-    title: qsTr("Scroll")
+    title: qsTr("开放平台")
 
     ColumnLayout
     {
@@ -51,24 +51,77 @@ ApplicationWindow {
             id:mainScrollView
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: parent.height - topToolButtonRect.height
+            //contentWidth: 20000
+            //contentHeight: 4000
+            onWidthChanged:
+            {
+                console.log( "ScrollView width chanage" );
+                mainColumLayout.sizeChanageLinkAction( 0 );
+            }
+            onHeightChanged:
+            {
+                console.log( "ScrollView height chanage" );
+                contentHeight = 5000;
+                mainColumLayout.sizeChanageLinkAction( 1 );
+            }
+
+            Component.onCompleted:
+            {
+                contentHeight = 5000;
+            }
         }
 
-
+        /************************************
+         * JS函数部份
+         ************************************/
+        property var currentContentItemType;    //1代表cjson的内存为示
         property var cjsonGuiObj;
-        property var cjsionItemObj;
+        property var cjsonItemObj;
+
         function changeViewToCjson()
         {
-            //mainScrollView.contentItem = CjsonGui;
+            console.log( "changeViewToCjson" );
             cjsonGuiObj = Qt.createComponent( "CjsonGui.qml" );
-            if( cjsonGuiObj.status == Component.Ready )
+            currentContentItemType = 1;
+            if( cjsonGuiObj.status === Component.Ready )
             {
                 console.log( "createComponent ready" );
 
-                cjsionItemObj = cjsonGuiObj.createObject( mainScrollView );
-                mainScrollView.contentItem = cjsionItemObj;
+                cjsonItemObj = cjsonGuiObj.createObject( mainScrollView );
+                mainScrollView.contentItem = cjsonItemObj;
 
-                cjsionItemObj.memoryDrawWidth = mainScrollView.width;
+                cjsonItemObj.memoryDrawWidth = mainScrollView.width;
+                mainScrollView.update();
+            }
+            else
+            {
+                console.log( "createComponent error" );
             }
         }
+
+
+        function sizeChanageLinkAction( pSizeChangeType )
+        {
+            console.log( "qml:sizeChangeLinkAction " + pSizeChangeType );
+            if( currentContentItemType === undefined )
+            {
+                console.log( "currentContentItemType is invalid" );
+            }
+            else
+            {
+                if( currentContentItemType === 1 )  //使用cjson的内存显示方式
+                {
+                    if( cjsonItemObj !== undefined )
+                    {
+                        if( pSizeChangeType === 0 )
+                        {
+                            cjsonItemObj.memoryDrawWidth = mainScrollView.width;
+
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

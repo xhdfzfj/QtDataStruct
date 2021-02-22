@@ -1,10 +1,10 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import xhd.memory.drawitem 1.0
 
 Item
 {
     id:xhdTestItem;
-
+    height:5000
     //property alias cjsonRectWidth: cjsonRect.width
     //property alias cjsonRectHeight: cjsonRect.height
     property alias memoryDrawWidth : memoryDrawItem.mMemoryItemWidth

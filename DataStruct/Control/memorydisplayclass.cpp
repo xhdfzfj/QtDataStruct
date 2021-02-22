@@ -49,13 +49,7 @@ MemoryDisplayClass::~MemoryDisplayClass()
         delete mDisplayMapP;
     }
 
-    while( !mDisplayElementS.empty() )
-    {
-        _tmpObjP = mDisplayElementS.front();
-        delete _tmpObjP;
-
-        mDisplayElementS.pop_front();
-    }
+    sub_ClearDisplayElementS();
 }
 
 /**
@@ -78,7 +72,9 @@ void MemoryDisplayClass::sub_SetWidth( int pWidth )
     setWidth( mWidth );
 
     sub_ReadyMemoryDisplayBlock( nullptr, DEFAULT_MEMORY_BLOCK_SIZE );
+    emit MemoryItemWidthChanged();
 
+    setHeight( 5000 );  //todo:测试
     update();
 }
 
@@ -108,13 +104,8 @@ void MemoryDisplayClass::sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t
         {
             mTempDataP = new uint8_t [ pDataSize ];
         }
-        else
-        {
-            delete mTempDataP;
-            mTempDataP = new uint8_t [ pDataSize ];
-            memset( mTempDataP, 0xFF, pDataSize );
-        }
-        memset( mTempDataP, 0x91, pDataSize );
+
+        memset( mTempDataP, 0xFF, pDataSize );
 
         mMemoryBlockP = mTempDataP;
         mMemotryBlockSize = pDataSize;
@@ -140,9 +131,28 @@ void MemoryDisplayClass::sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t
     setHeight( _tmpSize.height() );
     mHeight = _tmpSize.height();
 
+    sub_ClearDisplayElementS();
     sub_CreateMemoryDisplayElementS( mMemoryBlockP, mMemotryBlockSize, _tmpSize );
 
 }
+
+/**
+ * @brief MemoryDisplayClass::sub_ClearDisplayElementS
+ *      清除已有的显示元素
+ */
+void MemoryDisplayClass::sub_ClearDisplayElementS( void )
+{
+    DrawElementClass * _tmpObjP;
+
+    while( !mDisplayElementS.empty() )
+    {
+        _tmpObjP = mDisplayElementS.front();
+        delete _tmpObjP;
+
+        mDisplayElementS.pop_front();
+    }
+}
+
 
 /**
  * @brief MemoryDisplayClass::fun_CalcMemoryToBitmapSize
@@ -309,6 +319,8 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
         _tmpPainter->setPen( _tmpColor );
         _tmpPainter->drawText( _tmpRect.x(), _tmpRect.y(), _tmpStr );
     }
+
+    delete _tmpPainter;
 }
 
 
@@ -341,5 +353,5 @@ void MemoryDisplayClass::paint( QPainter *painter )
 
 void MemoryDisplayClass::sub_WidthChangeSlot()
 {
-    qDebug() << "test test test";
+    qDebug() << "memory block item width change";
 }
