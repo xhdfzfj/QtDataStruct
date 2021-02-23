@@ -71,10 +71,6 @@ void MemoryDisplayClass::sub_SetWidth( int pWidth )
     mWidth = pWidth;
     setWidth( mWidth );
 
-    sub_ReadyMemoryDisplayBlock( nullptr, DEFAULT_MEMORY_BLOCK_SIZE );
-    emit MemoryItemWidthChanged();
-
-    setHeight( 5000 );  //todo:测试
     update();
 }
 
@@ -133,6 +129,7 @@ void MemoryDisplayClass::sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t
 
     sub_ClearDisplayElementS();
     sub_CreateMemoryDisplayElementS( mMemoryBlockP, mMemotryBlockSize, _tmpSize );
+    this->update();
 
 }
 
@@ -262,6 +259,10 @@ void MemoryDisplayClass::sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint
         if( i % mRowFontCount == 0 )
         {
             //行首,要加入一个偏移的提示
+            if( _row != -1 )
+            {
+                return;
+            }
             _row += 1;
             _tmpRectP = new QRect( 0, _row * mRowHeight, mOffsetLabelSize, mRowHeight );
             _tmpU32Value = _row * mRowFontCount;
@@ -318,9 +319,16 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
         _tmpStr = _tmpDrawObjP->GetContent();
         _tmpPainter->setPen( _tmpColor );
         _tmpPainter->drawText( _tmpRect.x(), _tmpRect.y(), _tmpStr );
+
+        if( _tmpRect.y() == 0 )
+        {
+            qDebug() << "breakpoint";
+        }
     }
 
     delete _tmpPainter;
+
+    mDisplayMapP->save( "test.bmp" );
 }
 
 

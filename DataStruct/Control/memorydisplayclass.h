@@ -44,11 +44,10 @@ public:
     void sub_SetWidth( int pWdith );
     void sub_SetHeight( int pHeight );
 
-    int fun_ItemWidth(){ return 4000; }
+    void sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t pSize );
 
 private:
     void sub_SignalsConnect( void );
-    void sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t pSize );
     QSize fun_CalcMemoryToBitmapSize( uint32_t pMemorySize, int pWdith );
     void sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint32_t pDataSize, QSize pDestSize );
     void sub_DrawElementsToPixmap( void );
@@ -57,9 +56,8 @@ private:
     /********************************
      * 信号与槽部份
      * *****************************/
-
 signals:
-    void MemoryItemWidthChanged();
+    //void MemoryItemWidthChanged();
 public slots:
     void sub_WidthChangeSlot();
 

@@ -32,8 +32,8 @@ ApplicationWindow {
                     onClicked:
                     {
                         console.log( qsTr( "c language json click" ) );
-                        MyGuiControlObj.sub_ActiveCLanguageJsonBut();
-                        mainColumLayout.changeViewToCjson();
+                        mainColumLayout.changeViewToCjson( memoryDrawItem );
+                        MyGuiControlObj.sub_ActiveCLanguageJsonBut( memoryDrawItem );
                     }
                 }
                 Button
@@ -42,6 +42,10 @@ ApplicationWindow {
                     anchors.left:cJsonBut.right
                     anchors.leftMargin: 5
                     text:qsTr("测试")
+                    onClicked:
+                    {
+                        mainColumLayout.debugTestAction();
+                    }
                 }
             }
         }
@@ -51,7 +55,7 @@ ApplicationWindow {
             id:mainScrollView
             clip: true
             Layout.preferredWidth: parent.width
-
+            contentHeight: 4000
             Layout.preferredHeight: parent.height - topToolButtonRect.height
 
             onWidthChanged:
@@ -62,7 +66,7 @@ ApplicationWindow {
             onHeightChanged:
             {
                 console.log( "ScrollView height chanage" );
-                contentHeight = 5000;
+
                 mainColumLayout.sizeChanageLinkAction( 1 );
             }
 
@@ -124,6 +128,21 @@ ApplicationWindow {
 //                        }
 //                    }
                     memoryDrawItem.mMemoryItemWidth = mainScrollView.width;
+                }
+            }
+        }
+
+        function debugTestAction()
+        {
+            if( currentContentItemType === undefined )
+            {
+                console.log( "currentContentItemType is invalid" );
+            }
+            else
+            {
+                if( currentContentItemType === 1 )  //使用cjson的内存显示方式
+                {
+                    MyGuiControlObj.sub_CjsonMemoryTest();
                 }
             }
         }

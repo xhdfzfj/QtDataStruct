@@ -11,6 +11,7 @@ SOURCES += \
         Common.cpp \
         Control/guicontrolclass.cpp \
         Control/memorydisplayclass.cpp \
+        c_language/cjsoninterface.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -34,4 +35,5 @@ HEADERS += \
     Common.h \
     Control/guicontrolclass.h \
     Control/memorydisplayclass.h \
-    XhdDefine.h
+    XhdDefine.h \
+    c_language/cjsoninterface.h

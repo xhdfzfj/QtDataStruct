@@ -1,4 +1,5 @@
-﻿#include "guicontrolclass.h"
+﻿#include "../c_language/cjsoninterface.h"
+#include "guicontrolclass.h"
 
 /**
  * @brief GuiControlClass::GuiControlClass
@@ -21,9 +22,25 @@ void GuiControlClass::sub_SignalConntectSlot()
 /**
  * @brief GuiControlClass::sub_ActiveCLanguageJsonBut
  */
-void GuiControlClass::sub_ActiveCLanguageJsonBut()
+void GuiControlClass::sub_ActiveCLanguageJsonBut( QObject * pDestObjP )
 {
+    mMemoryDisplayObjP = ( MemoryDisplayClass * ) pDestObjP;
+
     emit guiCLanguageJsonButClickSig();
+}
+
+/**
+ * @brief GuiControlClass::sub_CjsonMemoryTest
+ */
+void GuiControlClass::sub_CjsonMemoryTest( void )
+{
+    uint8_t * _tmpP;
+    uint32_t _tmpValue;
+
+    sub_CjsonMemoryChanage();
+
+    _tmpP = fun_GetCjsonBuf( _tmpValue );
+    mMemoryDisplayObjP->sub_ReadyMemoryDisplayBlock( _tmpP, _tmpValue );
 }
 
 
@@ -36,5 +53,9 @@ void GuiControlClass::sub_ActiveCLanguageJsonBut()
  */
 void GuiControlClass::guiCLanguageJsonButClickSlot()
 {
-    qDebug( "guiCLanguageJsonButClickSlot" );
+    uint8_t * _tmpP;
+    uint32_t _tmpValue;
+
+    _tmpP = fun_GetCjsonBuf( _tmpValue );
+    mMemoryDisplayObjP->sub_ReadyMemoryDisplayBlock( _tmpP, _tmpValue );
 }
