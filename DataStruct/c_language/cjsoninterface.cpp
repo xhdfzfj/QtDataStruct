@@ -1,4 +1,6 @@
+#include <cstring>
 #include "Control/guicontrolclass.h"
+#include "./cjson/JsonAnalyse.h"
 #include "./cjsoninterface.h"
 
 /****************************************
@@ -19,6 +21,14 @@ uint8_t * fun_GetCjsonBuf( uint32_t & pRetBufSize )
 
 void sub_CjsonMemoryChanage()
 {
-    gCjsonBuf[ 0 ] = 0xAA;
-    gCjsonBuf[ 256 ] = 0xBB;
+    JsonParam_S * _retResultP;
+    uint8_t * _tmpP;
+    uint16_t _tmpLen;
+
+    _retResultP = nullptr;
+    strcpy( ( char * )gCjsonBuf, "{\"paramters\":{\"tag1\":123456,\"tag2\":654321,\"tag3\":\"1234567890098765\"},\"command\":\"testcommand\"}" );
+    _tmpLen = ( uint16_t )strlen( ( char * )gCjsonBuf );
+    _tmpP = &gCjsonBuf[ _tmpLen + 1 ];
+
+    fun_JsonAnalyse( gCjsonBuf, _tmpLen, _tmpP, &_retResultP );
 }

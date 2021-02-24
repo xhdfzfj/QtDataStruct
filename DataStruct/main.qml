@@ -55,7 +55,6 @@ ApplicationWindow {
             id:mainScrollView
             clip: true
             Layout.preferredWidth: parent.width
-            contentHeight: 4000
             Layout.preferredHeight: parent.height - topToolButtonRect.height
 
             onWidthChanged:

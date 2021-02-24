@@ -120,6 +120,7 @@ void MemoryDisplayClass::sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t
     if( mDisplayMapP != nullptr )
     {
         delete mDisplayMapP;
+        mDisplayMapP = nullptr;
     }
 
     mDisplayMapP = new QPixmap( _tmpSize );
@@ -253,19 +254,16 @@ void MemoryDisplayClass::sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint
     _y = 0;
     _x = 0;
 
-    _row = -1;
+    _row = 0;
     while( i < pDataSize )
     {
         if( i % mRowFontCount == 0 )
         {
             //行首,要加入一个偏移的提示
-            if( _row != -1 )
-            {
-                return;
-            }
             _row += 1;
+
             _tmpRectP = new QRect( 0, _row * mRowHeight, mOffsetLabelSize, mRowHeight );
-            _tmpU32Value = _row * mRowFontCount;
+            _tmpU32Value = ( _row - 1 ) * mRowFontCount;
 
             sub_IntToHex( _tmpU32Value, _tmpStr, 8 );
             _tmpStr += ":";
@@ -310,6 +308,12 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
     QColor _tmpColor;
     QRect _tmpRect;
     QString _tmpStr;
+    QBrush _tmpBrush;
+
+    _tmpColor = Qt::black;
+    _tmpBrush.setColor( _tmpColor );
+    _tmpBrush.setStyle( Qt::BrushStyle::SolidPattern );
+    _tmpPainter->fillRect( 0, 0, mDisplayMapP->width(), mDisplayMapP->height(), _tmpBrush );
 
     foreach( DrawElementClass * _tmpDrawObjP, mDisplayElementS )
     {
@@ -327,8 +331,6 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
     }
 
     delete _tmpPainter;
-
-    mDisplayMapP->save( "test.bmp" );
 }
 
 
@@ -342,8 +344,15 @@ void MemoryDisplayClass::paint( QPainter *painter )
     qDebug() << "宽度" << this->width();
     qDebug() << "高度" << this->height();
 
+    QBrush _tmpBrush;
+    QColor _tmpColor( Qt::black );
+
+    _tmpBrush.setColor( _tmpColor );
+    _tmpBrush.setStyle( Qt::BrushStyle::SolidPattern );
+
     if( mDisplayMapP != nullptr )
     {
+        painter->fillRect( 0, 0, width(), height(), _tmpBrush );
         painter->drawPixmap( X_SPACE_SIZE, Y_SPACE_SIZE, *mDisplayMapP, 0, 0, mDisplayMapP->width(), mDisplayMapP->height() );
 
 //        QBrush _tmpBrush;

@@ -1,0 +1,162 @@
+/*
+ * @Author: your name
+ * @Date: 2021-02-22 12:04:08
+ * @LastEditTime: 2021-02-24 15:38:04
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \SourceCode\CommonFun\CommonFun.c
+ */
+#include <stddef.h>
+#include "./CommonFun.h"
+
+
+inline void FetekMemCpy( void *pDstP, const void *pSrcP, uint32_t pLen )
+{  
+    uint8_t *DstP = ( uint8_t * )pDstP;
+    const uint8_t *SrcP = ( const uint8_t * )pSrcP;
+
+    if ( DstP < SrcP ) //从低地址开始拷贝
+    {  
+        while ( pLen-- )
+        {  
+            *( DstP++ ) = *( SrcP++ );
+        }  
+    }
+    else if ( DstP > SrcP ) //从高地址开始拷贝
+    {  
+        DstP += pLen;
+        SrcP += pLen;
+
+        while ( pLen-- )
+        {
+            *( --DstP ) = *( --SrcP );
+        }  
+    }
+    else
+    {
+    }
+}
+
+/**
+ * @brief 
+ *      查找子内存
+ * @param pSrcDataP 
+ * @param pSrcDataLen 
+ * @param pDestDataP 
+ * @param pDestDataLen 
+ * @return uint32_t
+ *      0xffffffff 没有找到
+ *      其它 子内存的启始下标 
+ */
+uint32_t fun_FindSubStr( uint8_t * pSrcDataP, uint16_t pSrcDataLen, uint8_t * pDestDataP, uint16_t pDestDataLen )
+{
+    uint32_t _retValue;
+    uint16_t i, j;
+
+    _retValue = 0xffffffff;
+
+    i = 0;
+    j = 0;
+
+    if( pSrcDataLen >= pDestDataLen )
+    {
+        while( i < pSrcDataLen )
+        {
+            if( pSrcDataP[ i ] == pDestDataP[ j ] )
+            {
+                j += 1;
+                if( j == pDestDataLen )
+                {
+                    _retValue = i + 1 - j;
+                    break;
+                }
+            }
+            else
+            {
+                j = 0;
+            }
+            i += 1;
+        }
+    }
+
+    return _retValue;
+}
+
+/**
+ * @brief 
+ *      查找指定的字符
+ * @param pDestP 
+ *      目标缓冲区
+ * @param pDestLen
+ *      目标缓冲区大小 
+ * @param pOrder 
+ *      查找顺序
+ * @return uint8_t* 
+ */
+uint8_t * fun_FindSubChar( uint8_t * pDestP, uint16_t pDestLen, uint8_t pDestValue, uint8_t pOrder )
+{
+    uint8_t * _retP;
+    uint16_t i;
+
+    _retP = NULL;
+
+    if( pOrder == FIND_POSITION_ORDER )
+    {
+        //正序
+        i = 0;
+        while( i < pDestLen )
+        {
+            if( pDestP[ i ] == pDestValue )
+            {
+                _retP = &pDestP[ i ];
+                break;
+            }
+
+            i += 1;
+        }
+    }
+    else
+    {
+        //倒序
+        i = pDestLen;
+        while( i > 0 )
+        {
+            if( *( pDestP - ( pDestLen - i ) ) == pDestValue )
+            {
+                _retP = pDestP - ( pDestLen - i );
+                break;
+            }
+
+            i -= 1;
+        }
+    }
+    return _retP;
+}
+
+/**
+ * @brief 
+ * 
+ * @param pMemP 
+ * @param pMemLen 
+ * @return uint32_t 
+ */
+uint32_t fun_DataBufToUint32Value( uint8_t * pMemP, uint16_t pMemLen )
+{
+    uint32_t _retValue;
+    uint32_t _tmpU32Value;
+    uint32_t i, j;
+
+    _retValue = 0;
+
+    for( i = 0; i < pMemLen; i++ )
+    {
+        _tmpU32Value = *( pMemP + i ) - 0x30;
+        for( j = 0; j < ( pMemLen - i - 1 ); j++ )
+        {
+            _tmpU32Value *= 10;
+        }
+        _retValue += _tmpU32Value;
+    }
+
+    return _retValue;
+}

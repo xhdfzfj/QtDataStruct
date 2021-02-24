@@ -11,6 +11,8 @@ SOURCES += \
         Common.cpp \
         Control/guicontrolclass.cpp \
         Control/memorydisplayclass.cpp \
+        c_language/cjson/CommonFun.c \
+        c_language/cjson/JsonAnalyse.c \
         c_language/cjsoninterface.cpp \
         main.cpp
 
@@ -36,4 +38,7 @@ HEADERS += \
     Control/guicontrolclass.h \
     Control/memorydisplayclass.h \
     XhdDefine.h \
+    c_language/cjson/CommonFun.h \
+    c_language/cjson/JsonAnalyse.h \
+    c_language/cjson/JsonParamDef.h \
     c_language/cjsoninterface.h
