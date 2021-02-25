@@ -28,7 +28,7 @@ extern "C" {
 uint32_t fun_JsonAnalyse( uint8_t * pJsonBufP, uint16_t pJsonLen, uint8_t * pFreeSpaceP, JsonParam_S ** pResultP );
 uint32_t fun_CreateOrAddJsonResult( uint8_t * pJsonTagP, uint8_t pJsonTagLen, 
                                     uint8_t * pJsonValueP, uint8_t pJsonValueLen, uint8_t pJsonValueType, 
-                                    uint8_t * pBackupFreeP, uint8_t * pRetBackUpUseCount, uint8_t * pJsonBufP, uint16_t pJsonBufLen, 
+                                    uint8_t * pBackupFreeP, uint16_t * pRetBackUpUseCount, uint8_t * pJsonBufP, uint16_t pJsonBufLen, 
                                     JsonParam_S ** pResultP );
 #if __cplusplus
 }
