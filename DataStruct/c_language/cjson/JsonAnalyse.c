@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <string.h>
 #include "./CommonFun.h"
 #include "./JsonAnalyse.h"
 
@@ -741,4 +742,58 @@ uint32_t fun_JsonAnalyse( uint8_t * pJsonBufP, uint16_t pJsonLen, uint8_t * pFre
     }
     
     return _retValue;
+}
+
+
+/**
+ * @brief 
+ *      查找指定TAG的分析结果
+ * @param pSrcJsonParamP 
+ * @param pTagContenP 
+ * @param pTagContentLen 
+ * @return JsonParam_S* 
+ */
+JsonParam_S * fun_FindJsonTag( JsonParam_S * pSrcJsonParamP, uint8_t * pTagContenP, uint16_t pTagContentLen )
+{
+    JsonParam_S * _tmpParamP;
+    JsonParam_S * _retP;
+    JsonParam_S * _tmpParentP;
+
+    _retP = NULL;
+    _tmpParamP = NULL;
+    _tmpParamP = pSrcJsonParamP;
+    while( _tmpParamP != NULL )
+    {
+        if( _tmpParamP->paramType == JSON_PARAM_TAGVALUE_TYPE )
+        {
+            if( _tmpParamP->JsonParamValue_U.mTagAndValue_S.mTagNameLen == pTagContentLen )
+            {
+                if( memcmp( _tmpParamP->JsonParamValue_U.mTagAndValue_S.mTagName, pTagContenP, pTagContentLen ) == 0 )
+                {
+                    _retP = _tmpParamP;
+                    break;
+                }
+            }
+            
+            _tmpParamP = _tmpParamP->nextP;
+        }
+        else
+        {
+            //属于结构体与数组
+            _tmpParentP = _tmpParamP;
+            _tmpParamP = _tmpParentP->JsonParamValue_U.mStructOrArrayP;
+            _retP = fun_FindJsonTag( _tmpParamP, pTagContenP, pTagContentLen );
+            if( _retP != NULL )
+            {
+                break;
+            }
+            else
+            {
+                _tmpParamP = _tmpParentP->nextP;
+                _tmpParentP = NULL;
+            }
+        }
+    }
+
+    return _retP;
 }

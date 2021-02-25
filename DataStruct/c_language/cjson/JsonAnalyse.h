@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-02-23 17:29:23
- * @LastEditTime: 2021-02-23 18:58:55
+ * @LastEditTime: 2021-02-25 18:43:35
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \SourceCode\CommonFun\JsonAnalyse.h
@@ -30,6 +30,7 @@ uint32_t fun_CreateOrAddJsonResult( uint8_t * pJsonTagP, uint8_t pJsonTagLen,
                                     uint8_t * pJsonValueP, uint8_t pJsonValueLen, uint8_t pJsonValueType, 
                                     uint8_t * pBackupFreeP, uint16_t * pRetBackUpUseCount, uint8_t * pJsonBufP, uint16_t pJsonBufLen, 
                                     JsonParam_S ** pResultP );
+JsonParam_S * fun_FindJsonTag( JsonParam_S * pSrcJsonParamP, uint8_t * pTagContenP, uint16_t pTagContentLen );
 #if __cplusplus
 }
 #endif
