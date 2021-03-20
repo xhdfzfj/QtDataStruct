@@ -38,9 +38,23 @@ ApplicationWindow {
                 }
                 Button
                 {
-                    id:debugBut
+                    id:avlTreeBut
                     anchors.left:cJsonBut.right
                     anchors.leftMargin: 5
+                    text:qsTr("平衡树")
+                    onClicked:
+                    {
+                        console.log( qsTr( "Avl Tree Click" ) )
+                        mainColumLayout.changeViewToAvlTree();
+                        MyGuiControlObj.sbu_ActiveAvlTreeBut( XhdMemoryDrawItem );
+                    }
+                }
+
+                Button
+                {
+                    id:debugBut
+                    anchors.left:parent.right - 100
+                    anchors.rightMargin: 5
                     text:qsTr("测试")
                     onClicked:
                     {
@@ -107,6 +121,12 @@ ApplicationWindow {
         }
 
 
+        function changeViewToAvlTree()
+        {
+            currentContentItemType = 2;
+        }
+
+
         function sizeChanageLinkAction( pSizeChangeType )
         {
             console.log( "qml:sizeChangeLinkAction " + pSizeChangeType );
@@ -118,14 +138,6 @@ ApplicationWindow {
             {
                 if( currentContentItemType === 1 )  //使用cjson的内存显示方式
                 {
-//                    if( cjsonItemObj !== undefined )
-//                    {
-//                        if( pSizeChangeType === 0 )
-//                        {
-//                            cjsonItemObj.memoryDrawWidth = mainScrollView.width;
-
-//                        }
-//                    }
                     memoryDrawItem.mMemoryItemWidth = mainScrollView.width;
                 }
             }
@@ -142,6 +154,10 @@ ApplicationWindow {
                 if( currentContentItemType === 1 )  //使用cjson的内存显示方式
                 {
                     MyGuiControlObj.sub_CjsonMemoryTest();
+                }
+                else if( currentContentItemType === 2 )  //测试AVL平衡树
+                {
+                    MyGuiControlObj.sub_AvlTreeAddNode();
                 }
             }
         }

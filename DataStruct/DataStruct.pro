@@ -33,6 +33,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Class/AvlTreeClass.h \
+    Class/TreeNodeClass.h \
     Class/drawelementclass.h \
     Common.h \
     Control/guicontrolclass.h \
