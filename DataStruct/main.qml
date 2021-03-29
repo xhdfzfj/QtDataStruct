@@ -46,7 +46,7 @@ ApplicationWindow {
                     {
                         console.log( qsTr( "Avl Tree Click" ) )
                         mainColumLayout.changeViewToAvlTree();
-                        MyGuiControlObj.sbu_ActiveAvlTreeBut( XhdMemoryDrawItem );
+                        MyGuiControlObj.sbu_ActiveAvlTreeBut( memoryDrawItem );
                     }
                 }
 
@@ -124,6 +124,8 @@ ApplicationWindow {
         function changeViewToAvlTree()
         {
             currentContentItemType = 2;
+            memoryDrawItem.mMemoryItemWidth = mainScrollView.width;
+            memoryDrawItem.mMemoryItemHeight = mainScrollView.height
         }
 
 

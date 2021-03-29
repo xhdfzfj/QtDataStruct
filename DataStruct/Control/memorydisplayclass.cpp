@@ -83,6 +83,7 @@ void MemoryDisplayClass::sub_SetHeight( int pHeight )
 {
     mHeight = pHeight;
     setHeight( mHeight );
+
     update();
 }
 
@@ -131,7 +132,20 @@ void MemoryDisplayClass::sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t
     sub_ClearDisplayElementS();
     sub_CreateMemoryDisplayElementS( mMemoryBlockP, mMemotryBlockSize, _tmpSize );
     this->update();
+}
 
+/**
+ * @brief MemoryDisplayClass::sub_ClearAll
+ *      清理一切
+ */
+void MemoryDisplayClass::sub_ClearAll( void )
+{
+    sub_ClearDisplayElementS();
+    if( mDisplayMapP != nullptr )
+    {
+        delete mDisplayMapP;
+        mDisplayMapP = nullptr;
+    }
 }
 
 /**
@@ -334,6 +348,81 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
 }
 
 
+/*************************************
+ * 以下部份是绘制AVLTREE
+ * ***********************************/
+
+/**
+ * @brief MemoryDisplayClass::sub_DrawAvlTree
+ * @param pDestTreeObjP
+ * @param pDestNewNodeP
+ */
+void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP, TreeNodeClass<int, int> *pDestNewNodeP )
+{
+    if( mDisplayMapP != nullptr )
+    {
+        delete mDisplayMapP;
+    }
+
+    sub_ClearDisplayElementS();
+
+    int _tmpTreeLevels;
+    int _tmpWidth;
+    int _tmpNodeS;
+    int _fontWidth;
+    int _fontHeight;
+    QFont _tmpFont;
+
+    if( !mFontSetFlag )
+    {
+        mDisplayFont = _tmpFont;
+        mFontSetFlag = true;
+    }
+    else
+    {
+        _tmpFont = mDisplayFont;
+    }
+
+    QFontMetrics _tmpFontMetrics(_tmpFont );
+
+    QString _testStr( "FFFFF" );
+
+    _fontWidth = _tmpFontMetrics.horizontalAdvance( _testStr );
+    _fontHeight = _tmpFontMetrics.height();
+
+    _tmpTreeLevels = pDestTreeObjP->fun_GetTreeLevels();
+    if( _tmpTreeLevels != 0 )
+    {
+        _tmpNodeS = static_cast< int >( pow( 2, _tmpTreeLevels - 1 ) );
+        _tmpWidth = ( _tmpNodeS * 1.5 ) * _fontWidth;
+
+        if( mWidth < _tmpWidth )
+        {
+            mWidth = _tmpWidth;
+            setWidth( mWidth );
+        }
+    }
+
+    QRect * _tmpRectP;
+
+    _tmpRectP = new QRect( 20, 20, 100, 100 );
+
+    mDisplayMapP = new QPixmap( mWidth, mHeight );
+    QPainter * _tmpPaintP = new QPainter( mDisplayMapP );
+
+    QPen _tmpPen;
+
+    // 反走样
+    _tmpPaintP->setRenderHint( QPainter::Antialiasing, true );
+    _tmpPaintP->setPen( QPen( QColor( 255, 0, 0 ), 2 ) );
+    _tmpPaintP->drawRect( *_tmpRectP );
+
+    delete _tmpPaintP;
+
+    update();
+}
+
+
 /**
  * @brief MemoryDisplayClass::paint
  *      系统要求重载的函数
@@ -353,7 +442,7 @@ void MemoryDisplayClass::paint( QPainter *painter )
     if( mDisplayMapP != nullptr )
     {
         painter->fillRect( 0, 0, width(), height(), _tmpBrush );
-        painter->drawPixmap( X_SPACE_SIZE, Y_SPACE_SIZE, *mDisplayMapP, 0, 0, mDisplayMapP->width(), mDisplayMapP->height() );
+        painter->drawPixmap( 0, 0, *mDisplayMapP, 0, 0, mDisplayMapP->width(), mDisplayMapP->height() );
 
 //        QBrush _tmpBrush;
 //        QColor _tmpColor( Qt::yellow );

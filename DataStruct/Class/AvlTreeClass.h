@@ -15,6 +15,7 @@ public:
     {
         mRootNodeP = nullptr;
         mUiCallBack = nullptr;
+        mMaxLevel = 0;              //代表是空树
     }
 
     /***********************
@@ -55,6 +56,8 @@ public:
             mRootNodeP->mParentNodeP = nullptr;
             mRootNodeP->mLeftChildP = nullptr;
             mRootNodeP->mRightChildP = nullptr;
+            mRootNodeP->SetNodeLevel( 1 );
+            mMaxLevel = 1;
         }
 
         if( mUiCallBack != nullptr )
@@ -73,12 +76,24 @@ public:
         mUiCallBack = pCallBack;
     }
 
+    /**
+     * @brief fun_GetTreeLevels
+     *      获取这个树最大的层数
+     * @return
+     */
+    int fun_GetTreeLevels()
+    {
+        return mMaxLevel;
+    }
+
     /***********************
      * 变量定义
      * *********************/
 private:
     TreeNodeClass< NodeCompareValue, NodeContentObject > * mRootNodeP;
     function< void( TreeNodeClass< NodeCompareValue, NodeContentObject > * ) > mUiCallBack;
+
+    int mMaxLevel;
 };
 
 #endif // AVLTREECLASS_H

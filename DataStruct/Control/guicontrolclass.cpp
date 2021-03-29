@@ -83,7 +83,8 @@ void GuiControlClass::sub_CjsonMemoryTest( void )
  */
 void GuiControlClass::sub_AvlTreeCallBack( TreeNodeClass< int, int > * pNewNode )
 {
-    qDebug() << "test test test callback";
+    qDebug() << "Avl新节点加入回调GUI";
+    mMemoryDisplayObjP->sub_DrawAvlTree( mAvlTreeObjP, pNewNode );
 }
 
 
@@ -120,4 +121,6 @@ void GuiControlClass::guiAvlTreeButClickSlot()
 
     _tmpFun = std::bind( &GuiControlClass::sub_AvlTreeCallBack, this, std::placeholders::_1 );
     mAvlTreeObjP->sub_SetUiDisplayCallBack( _tmpFun );
+
+    mMemoryDisplayObjP->sub_ClearAll();
 }

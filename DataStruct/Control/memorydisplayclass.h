@@ -6,6 +6,7 @@
 #include <QtQuick/QQuickPaintedItem>
 #include <QList>
 #include "../Class/drawelementclass.h"
+#include "../Class/AvlTreeClass.h"
 
 class MemoryDisplayClass : public QQuickPaintedItem
 {
@@ -44,7 +45,11 @@ public:
     void sub_SetWidth( int pWdith );
     void sub_SetHeight( int pHeight );
 
+    void sub_ClearAll( void );
+
     void sub_ReadyMemoryDisplayBlock( uint8_t * pDataP, uint32_t pSize );
+
+    void sub_DrawAvlTree( AvlTreeClass< int, int> * pDestTreeObjP, TreeNodeClass< int, int > * pDestNewNodeP );
 
 private:
     void sub_SignalsConnect( void );
