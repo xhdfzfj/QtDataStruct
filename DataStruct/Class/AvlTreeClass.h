@@ -1,6 +1,8 @@
 #ifndef AVLTREECLASS_H
 #define AVLTREECLASS_H
 
+#include <list>
+#include <queue>
 #include <iostream>
 #include <functional>
 #include "./TreeNodeClass.h"
@@ -84,6 +86,42 @@ public:
     int fun_GetTreeLevels()
     {
         return mMaxLevel;
+    }
+
+    /**
+     * @brief fun_LevelTraversal
+     *      进行层遍历
+     * @return
+     */
+    list< TreeNodeClass< NodeCompareValue, NodeContentObject > * > fun_LevelTraversal()
+    {
+        list< TreeNodeClass< NodeCompareValue, NodeContentObject > * > _retList;
+        queue< TreeNodeClass< NodeCompareValue, NodeContentObject > * > _tmpQueue;
+        TreeNodeClass< NodeCompareValue, NodeContentObject > * _tmpNodeP;
+
+        if( mRootNodeP != nullptr )
+        {
+            _retList.push_back( mRootNodeP );
+
+            _tmpQueue.push( mRootNodeP->mLeftChildP );
+            _tmpQueue.push( mRootNodeP->mRightChildP );
+
+            while( !_tmpQueue.empty() )
+            {
+                _tmpNodeP = _tmpQueue.front();
+                _tmpQueue.pop();
+
+                _retList.push_back( _tmpNodeP );
+
+                if( _tmpNodeP != nullptr )
+                {
+                    _tmpQueue.push( _tmpNodeP->mLeftChildP );
+                    _tmpQueue.push( _tmpNodeP->mRightChildP );
+                }
+            }
+        }
+
+        return _retList;
     }
 
     /***********************

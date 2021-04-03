@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <strstream>
 #include <iomanip>
+#include <list>
 #include "../XhdDefine.h"
 #include "../Common.h"
 #include "memorydisplayclass.h"
@@ -368,6 +369,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
 
     int _tmpTreeLevels;
     int _tmpWidth;
+    int _tmpHeight;
     int _tmpNodeS;
     int _fontWidth;
     int _fontHeight;
@@ -401,6 +403,23 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
             mWidth = _tmpWidth;
             setWidth( mWidth );
         }
+
+        _tmpHeight = _tmpTreeLevels * 3 * _fontHeight;
+        if( mHeight < _tmpHeight )
+        {
+            mHeight = _tmpHeight;
+            setHeight( mHeight );
+        }
+
+        std::list< TreeNodeClass< int, int > * > _tmpNodeSlevel;  //保存中序遍历的节点
+        _tmpNodeSlevel = pDestTreeObjP->fun_LevelTraversal();
+
+        qDebug() << "层遍历结果:" << _tmpNodeSlevel.size();
+
+        if( !_tmpNodeSlevel.empty() )
+        {
+            sub_DrawAvlTreeToDisplayMap( _tmpNodeSlevel, _tmpFontMetrics );
+        }
     }
 
     QRect * _tmpRectP;
@@ -420,6 +439,32 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
     delete _tmpPaintP;
 
     update();
+}
+
+/**
+ * @brief MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap
+ *      把层遍历的结果显示到 DisplayMap 中
+ * @param pDestTreeLevelList
+ */
+void MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics pFontMetrics )
+{
+    QString _tmpStr;
+    int i;
+    int j;
+    TreeNodeClass< int, int > * _tmpNodeP;
+
+    i = 1;
+    j = 0;
+    while( !pDestTreeLevelList.empty() )
+    {
+        j = pow( 2, i - 1 );
+        _tmpNodeP = pDestTreeLevelList.front();
+        pDestTreeLevelList.pop_front();
+
+        _tmpStr = QString::number( _tmpNodeP->mCompareValue );
+
+
+    }
 }
 
 

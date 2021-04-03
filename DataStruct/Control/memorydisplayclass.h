@@ -57,6 +57,7 @@ private:
     void sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint32_t pDataSize, QSize pDestSize );
     void sub_DrawElementsToPixmap( void );
     void sub_ClearDisplayElementS( void );
+    void sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics mFontMetrics );
 
     /********************************
      * 信号与槽部份
