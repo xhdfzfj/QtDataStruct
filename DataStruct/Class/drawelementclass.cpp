@@ -9,6 +9,7 @@ DrawElementClass::DrawElementClass( QRect pRect, QString pContent, ColorFlag pCo
     mRect = pRect;
     mContent = pContent;
     mColor = pColor;
+    mBorderFlag = false;
     if( mColor == ColorFlag::BLACK )
     {
         mFrontColor.setRgb( 0, 0, 0, 255 );

@@ -325,6 +325,8 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
     QString _tmpStr;
     QBrush _tmpBrush;
 
+    _tmpPainter->setRenderHint( QPainter::Antialiasing, true );
+
     _tmpColor = Qt::black;
     _tmpBrush.setColor( _tmpColor );
     _tmpBrush.setStyle( Qt::BrushStyle::SolidPattern );
@@ -336,12 +338,36 @@ void MemoryDisplayClass::sub_DrawElementsToPixmap( void )
         _tmpPainter->setPen( _tmpColor );
         _tmpRect = _tmpDrawObjP->GetRect();
         _tmpStr = _tmpDrawObjP->GetContent();
-        _tmpPainter->setPen( _tmpColor );
-        _tmpPainter->drawText( _tmpRect.x(), _tmpRect.y(), _tmpStr );
 
-        if( _tmpRect.y() == 0 )
+        if( _tmpDrawObjP->GetBorder() ) //是否要求绘制边框
         {
-            qDebug() << "breakpoint";
+            _tmpPainter->setPen( QPen( QColor( 255, 0, 0 ), 1 ) );
+            _tmpPainter->drawRect( _tmpRect );
+
+            _tmpPainter->setPen( _tmpColor );
+
+            int _x;
+            int _contnetWidth, _fontHeight;
+
+            _fontHeight = _tmpDrawObjP->GetFontHeight();
+
+            _contnetWidth = _tmpDrawObjP->GetContentDisplayLen();
+
+            _x = _tmpRect.width() - _contnetWidth;
+            _x /= 2;
+
+            _tmpPainter->setPen( _tmpColor );
+            _tmpPainter->drawText( _x + _tmpRect.x(), _tmpRect.y() + _fontHeight, _tmpStr );
+        }
+        else
+        {
+            _tmpPainter->setPen( _tmpColor );
+            _tmpPainter->drawText( _tmpRect.x(), _tmpRect.y(), _tmpStr );
+
+            if( _tmpRect.y() == 0 )
+            {
+                qDebug() << "breakpoint";
+            }
         }
     }
 
@@ -404,7 +430,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
             setWidth( mWidth );
         }
 
-        _tmpHeight = _tmpTreeLevels * 3 * _fontHeight;
+        _tmpHeight = _tmpTreeLevels * 4 * _fontHeight + 2 * _fontHeight;
         if( mHeight < _tmpHeight )
         {
             mHeight = _tmpHeight;
@@ -419,26 +445,32 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
         if( !_tmpNodeSlevel.empty() )
         {
             sub_DrawAvlTreeToDisplayMap( _tmpNodeSlevel, _tmpFontMetrics );
+
+            mDisplayMapP = new QPixmap( mWidth, mHeight );
+
+            sub_DrawElementsToPixmap();
+
+            update();
         }
     }
 
-    QRect * _tmpRectP;
+//    QRect * _tmpRectP;
 
-    _tmpRectP = new QRect( 20, 20, 100, 100 );
+//    _tmpRectP = new QRect( 20, 20, 100, 100 );
 
-    mDisplayMapP = new QPixmap( mWidth, mHeight );
-    QPainter * _tmpPaintP = new QPainter( mDisplayMapP );
+//    mDisplayMapP = new QPixmap( mWidth, mHeight );
+//    QPainter * _tmpPaintP = new QPainter( mDisplayMapP );
 
-    QPen _tmpPen;
+//    QPen _tmpPen;
 
-    // 反走样
-    _tmpPaintP->setRenderHint( QPainter::Antialiasing, true );
-    _tmpPaintP->setPen( QPen( QColor( 255, 0, 0 ), 2 ) );
-    _tmpPaintP->drawRect( *_tmpRectP );
+//    // 反走样
+//    _tmpPaintP->setRenderHint( QPainter::Antialiasing, true );
+//    _tmpPaintP->setPen( QPen( QColor( 255, 0, 0 ), 2 ) );
+//    _tmpPaintP->drawRect( *_tmpRectP );
 
-    delete _tmpPaintP;
+//    delete _tmpPaintP;
 
-    update();
+//    update();
 }
 
 /**
@@ -449,21 +481,61 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
 void MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics pFontMetrics )
 {
     QString _tmpStr;
-    int i;
+    int i, z;
     int j;
+    int x, y;
+    int _width;
+    int _height;
     TreeNodeClass< int, int > * _tmpNodeP;
+    QRect * _tmpRectP;
+    DrawElementClass * _tmpDrawObjP;
 
     i = 1;
     j = 0;
+    _height = pFontMetrics.height() + 3;
+    y = _height;
+    _width = pFontMetrics.horizontalAdvance( "FFFFF" );
     while( !pDestTreeLevelList.empty() )
     {
         j = pow( 2, i - 1 );
-        _tmpNodeP = pDestTreeLevelList.front();
-        pDestTreeLevelList.pop_front();
+        x = mWidth / 2;
 
-        _tmpStr = QString::number( _tmpNodeP->mCompareValue );
+        if( j <= 1 )
+        {
+            x = mWidth / 2 - _width / 2;
+        }
+        else
+        {
+            x = mWidth / 2 - _width / 2 - ( j / 2 ) * _width - ( ( j / 2 ) - 1 ) * _width;
+        }
+        for( z = 0; z < j; z++ )
+        {
+            _tmpNodeP = pDestTreeLevelList.front();
+            pDestTreeLevelList.pop_front();
 
+            if( _tmpNodeP == nullptr )
+            {
+                _tmpStr = "";
+            }
+            else
+            {
+                _tmpStr = QString::number( _tmpNodeP->mCompareValue );
+            }
 
+            _tmpRectP = new QRect( x, y, _width, _height );
+
+            x += _width + _width;
+
+            _tmpDrawObjP = new DrawElementClass( *_tmpRectP, _tmpStr, ColorFlag::BLUE );
+            _tmpDrawObjP->SetBorder();
+            _tmpDrawObjP->SetFontHeight( pFontMetrics.height() );
+            _tmpDrawObjP->SetContentDisplayLen( pFontMetrics.horizontalAdvance( _tmpStr ) );
+            mDisplayElementS.push_back( _tmpDrawObjP );
+
+            delete _tmpRectP;
+        }
+        i += 1;
+        y += ( _height * 4 );
     }
 }
 
