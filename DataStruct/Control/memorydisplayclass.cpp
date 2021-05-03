@@ -421,7 +421,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
     _tmpTreeLevels = pDestTreeObjP->fun_GetTreeLevels();
     if( _tmpTreeLevels != 0 )
     {
-        _tmpNodeS = static_cast< int >( pow( 2, _tmpTreeLevels - 1 ) );
+        _tmpNodeS = static_cast< int >( pow( 2, _tmpTreeLevels ) - 1 );
         _tmpWidth = ( _tmpNodeS * 1.5 ) * _fontWidth;
 
         if( mWidth < _tmpWidth )

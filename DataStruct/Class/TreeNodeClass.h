@@ -14,6 +14,9 @@ public:
         mContentObj = pConteObj;
         mNodeHight = 0;
         mLevel = 0;
+        mParentNodeP = nullptr;
+        mLeftChildP = nullptr;
+        mRightChildP = nullptr;
     }
 
     /**
@@ -24,6 +27,16 @@ public:
     void SetNodeLevel( int pLevel )
     {
         mLevel = pLevel;
+    }
+
+    /**
+     * @brief SetNodeLinearPos
+     *      设置该节点进行线性保存时的数组下标
+     * @param pPosIndex
+     */
+    void SetLinearPos( int pPosIndex )
+    {
+        mLinearSavePos = pPosIndex;
     }
 
 
@@ -41,6 +54,11 @@ public:
 private:
     int mNodeHight;     //这个节点的高度
     int mLevel;         //这个节点的层数
+    int mLinearSavePos; //这个节点在线性保存时，在数组中的下标
+
+public: /*相应的属性部份*/
+    int GetNodeLevel()  {   return mLevel; }
+    int GetLinearPos()  {   return mLinearSavePos; }
 };
 
 #endif // TREENODECLASS_H

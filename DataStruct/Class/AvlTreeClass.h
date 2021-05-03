@@ -42,6 +42,50 @@ public:
 
     /**
      * @brief sub_InsertNode
+     *      向树中插入节点
+     * @param pParentNodeP
+     * @param pDestNodeP
+     */
+    void sub_InsertNodeInTree( TreeNodeClass< NodeCompareValue, NodeContentObject > * pParentNodeP,
+                               TreeNodeClass< NodeCompareValue, NodeContentObject > * pDestNodeP )
+    {
+        TreeNodeClass< NodeCompareValue, NodeContentObject > * _tmpNodeP;
+
+        if( pDestNodeP->mCompareValue > pParentNodeP->mCompareValue )
+        {
+            _tmpNodeP = pParentNodeP->mRightChildP;
+            if( _tmpNodeP == nullptr )
+            {
+                pParentNodeP->mRightChildP = pDestNodeP;
+                pDestNodeP->SetNodeLevel( pParentNodeP->GetNodeLevel() + 1 );
+            }
+            else
+            {
+                sub_InsertNodeInTree( _tmpNodeP, pDestNodeP );
+            }
+        }
+        else
+        {
+            _tmpNodeP = pParentNodeP->mLeftChildP;
+            if( _tmpNodeP == nullptr )
+            {
+                pParentNodeP->mLeftChildP = pDestNodeP;
+                pDestNodeP->SetNodeLevel( pParentNodeP->GetNodeLevel() + 1 );
+            }
+            else
+            {
+                sub_InsertNodeInTree( _tmpNodeP, pDestNodeP );
+            }
+        }
+
+        if( pDestNodeP->GetNodeLevel() > mMaxLevel )
+        {
+            mMaxLevel = pDestNodeP->GetNodeLevel();
+        }
+    }
+
+    /**
+     * @brief sub_InsertNode
      *      向平衡树中插入数据
      * @param pValue
      * @param pContentObj
@@ -49,6 +93,7 @@ public:
     void sub_InsertNode( NodeCompareValue pValue, NodeContentObject pContentObj )
     {
         TreeNodeClass< NodeCompareValue, NodeContentObject > * _tmpNewNodeP;
+        TreeNodeClass< NodeCompareValue, NodeContentObject > * _tmpNodeP;
 
         _tmpNewNodeP = new TreeNodeClass< NodeCompareValue, NodeContentObject >( pValue, pContentObj );
 
@@ -60,6 +105,12 @@ public:
             mRootNodeP->mRightChildP = nullptr;
             mRootNodeP->SetNodeLevel( 1 );
             mMaxLevel = 1;
+        }
+        else
+        {
+            _tmpNodeP = mRootNodeP;
+
+            sub_InsertNodeInTree( _tmpNodeP, _tmpNewNodeP );
         }
 
         if( mUiCallBack != nullptr )
@@ -98,29 +149,72 @@ public:
         list< TreeNodeClass< NodeCompareValue, NodeContentObject > * > _retList;
         queue< TreeNodeClass< NodeCompareValue, NodeContentObject > * > _tmpQueue;
         TreeNodeClass< NodeCompareValue, NodeContentObject > * _tmpNodeP;
+        TreeNodeClass< NodeCompareValue, NodeContentObject > ** _tmpNodeArrayP;
+
+        _tmpNodeArrayP = new TreeNodeClass< NodeCompareValue, NodeContentObject > * [ ( int )( pow( 2, mMaxLevel ) - 1 ) ];
+
+        int i, _tmpLen;
+        int _index;
+
+        _tmpLen = ( int )( pow( 2, mMaxLevel ) - 1 );
+        for( i = 0; i < _tmpLen; i++ )
+        {
+            _tmpNodeArrayP[ i ] = nullptr;
+        }
 
         if( mRootNodeP != nullptr )
         {
-            _retList.push_back( mRootNodeP );
-
-            _tmpQueue.push( mRootNodeP->mLeftChildP );
-            _tmpQueue.push( mRootNodeP->mRightChildP );
-
+            _tmpQueue.push( mRootNodeP );
             while( !_tmpQueue.empty() )
             {
                 _tmpNodeP = _tmpQueue.front();
                 _tmpQueue.pop();
 
-                _retList.push_back( _tmpNodeP );
-
                 if( _tmpNodeP != nullptr )
                 {
+                    if( _tmpNodeP->mParentNodeP == nullptr )
+                    {
+                        _tmpNodeArrayP[ 0 ] = _tmpNodeP;
+                        _tmpNodeP->SetLinearPos( 0 );
+                    }
+                    else
+                    {
+                        if( _tmpNodeP == _tmpNodeP->mParentNodeP->mLeftChildP )
+                        {
+                            _index = _tmpNodeP->mParentNodeP->GetLinearPos();
+                            _index *= 2;
+                            _index += 1;
+                            _tmpNodeP->SetLinearPos( _index );
+                        }
+                        else
+                        {
+                            _index = _tmpNodeP->mParentNodeP->GetLinearPos();
+                            _index *= 2;
+                            _index += 2;
+                            _tmpNodeP->SetLinearPos( _index );
+                        }
+
+                        _tmpNodeArrayP[ _index ] = _tmpNodeP;
+                    }
+                }
+
+                if( _tmpNodeP->mLeftChildP != nullptr )
+                {
                     _tmpQueue.push( _tmpNodeP->mLeftChildP );
+                }
+                if( _tmpNodeP->mRightChildP != nullptr )
+                {
                     _tmpQueue.push( _tmpNodeP->mRightChildP );
                 }
             }
+
+            for( i = 0; i < _tmpLen; i++ )
+            {
+                _retList.push_back( _tmpNodeArrayP[ i ] );
+            }
         }
 
+        delete [] _tmpNodeArrayP;
         return _retList;
     }
 
