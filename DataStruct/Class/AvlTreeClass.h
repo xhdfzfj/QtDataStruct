@@ -5,6 +5,7 @@
 #include <queue>
 #include <iostream>
 #include <functional>
+#include <math.h>
 #include "./TreeNodeClass.h"
 
 using namespace std;
@@ -58,6 +59,7 @@ public:
             {
                 pParentNodeP->mRightChildP = pDestNodeP;
                 pDestNodeP->SetNodeLevel( pParentNodeP->GetNodeLevel() + 1 );
+                pDestNodeP->mParentNodeP = pParentNodeP;
             }
             else
             {
@@ -71,6 +73,7 @@ public:
             {
                 pParentNodeP->mLeftChildP = pDestNodeP;
                 pDestNodeP->SetNodeLevel( pParentNodeP->GetNodeLevel() + 1 );
+                pDestNodeP->mParentNodeP = pParentNodeP;
             }
             else
             {

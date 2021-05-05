@@ -44,6 +44,7 @@ public:
 
     void sub_SetWidth( int pWdith );
     void sub_SetHeight( int pHeight );
+    int GetItemWidth()  { return mWidth; }
 
     void sub_ClearAll( void );
 
@@ -63,7 +64,7 @@ private:
      * 信号与槽部份
      * *****************************/
 signals:
-    //void MemoryItemWidthChanged();
+    void MemoryItemWidthChanged();
 public slots:
     void sub_WidthChangeSlot();
 

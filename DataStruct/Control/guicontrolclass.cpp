@@ -12,6 +12,7 @@
 GuiControlClass::GuiControlClass(QObject *parent) : QObject(parent)
 {
     mAvlTreeObjP = nullptr;
+    mDebugBut1Text = "测试窗体大小";
 }
 
 /**
@@ -31,7 +32,8 @@ void GuiControlClass::sub_SignalConntectSlot()
 void GuiControlClass::sub_ActiveCLanguageJsonBut( QObject * pDestObjP )
 {
     mMemoryDisplayObjP = ( MemoryDisplayClass * ) pDestObjP;
-
+    QObject::connect( mMemoryDisplayObjP, SIGNAL( MemoryDisplayClass::MemoryItemWidthChanged() ),
+                      this, SLOT( MemoryItemWidthChangedSlot() ) );
     emit guiCLanguageJsonButClickSig();
 }
 
@@ -43,6 +45,8 @@ void GuiControlClass::sub_ActiveCLanguageJsonBut( QObject * pDestObjP )
 void GuiControlClass::sbu_ActiveAvlTreeBut( QObject * pDestObjP )
 {
     mMemoryDisplayObjP = ( MemoryDisplayClass * )pDestObjP;
+    QObject::connect( mMemoryDisplayObjP, SIGNAL( MemoryItemWidthChanged() ),
+                      this, SLOT( MemoryItemWidthChangedSlot() ) );
     emit guiAvlTreeButClickSig();
 }
 
@@ -87,6 +91,32 @@ void GuiControlClass::sub_AvlTreeCallBack( TreeNodeClass< int, int > * pNewNode 
     mMemoryDisplayObjP->sub_DrawAvlTree( mAvlTreeObjP, pNewNode );
 }
 
+/**
+ * @brief GuiControlClass::GetContentWdith
+ * @return
+ */
+qreal GuiControlClass::GetContentWidth()
+{
+    qreal _retValue;
+
+    if( mMemoryDisplayObjP != nullptr )
+    {
+        _retValue = mContentWidth;
+    }
+    else
+    {
+        _retValue = 1024;
+    }
+
+    return _retValue;
+}
+
+
+void GuiControlClass::SetContentWidth( qreal pWidth )
+{
+    mContentWidth = pWidth;
+}
+
 
 /*************************************
  * 以下为SLOT实现
@@ -123,4 +153,32 @@ void GuiControlClass::guiAvlTreeButClickSlot()
     mAvlTreeObjP->sub_SetUiDisplayCallBack( _tmpFun );
 
     mMemoryDisplayObjP->sub_ClearAll();
+}
+
+/**
+ * @brief GuiControlClass::MemoryItemWidthChangedSlot
+ *      当内存画图的对象的宽度大于容器的宽度时响应的槽
+ */
+void GuiControlClass::MemoryItemWidthChangedSlot()
+{
+    qreal _tmpWidth;
+
+    _tmpWidth = mMemoryDisplayObjP->GetItemWidth();
+
+    mContentWidth = _tmpWidth;
+
+    emit guiContentWidthChange();
+}
+
+/**
+ * @brief GuiControlClass::sub_DebugFunction
+ *      测试功能专用
+ */
+void GuiControlClass::sub_DebugFunction()
+{
+    if( mMemoryDisplayObjP != nullptr )
+    {
+        mContentWidth = 2048;
+        emit guiContentWidthChange();
+    }
 }

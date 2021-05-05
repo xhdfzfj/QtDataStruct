@@ -428,6 +428,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
         {
             mWidth = _tmpWidth;
             setWidth( mWidth );
+            emit MemoryItemWidthChanged();
         }
 
         _tmpHeight = _tmpTreeLevels * 4 * _fontHeight + 2 * _fontHeight;
@@ -437,7 +438,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
             setHeight( mHeight );
         }
 
-        std::list< TreeNodeClass< int, int > * > _tmpNodeSlevel;  //保存中序遍历的节点
+        std::list< TreeNodeClass< int, int > * > _tmpNodeSlevel;
         _tmpNodeSlevel = pDestTreeObjP->fun_LevelTraversal();
 
         qDebug() << "层遍历结果:" << _tmpNodeSlevel.size();

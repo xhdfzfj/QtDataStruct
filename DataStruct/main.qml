@@ -61,6 +61,17 @@ ApplicationWindow {
                         mainColumLayout.debugTestAction();
                     }
                 }
+                Button
+                {
+                    id:debugBut1
+                    anchors.left: parent.right - 50
+                    anchors.rightMargin: 5
+                    text:MyGuiControlObj.mGuiDebugBut1Text
+                    onClicked:
+                    {
+                        MyGuiControlObj.sub_DebugFunction();
+                    }
+                }
             }
         }
 
@@ -70,6 +81,9 @@ ApplicationWindow {
             clip: true
             Layout.preferredWidth: parent.width
             Layout.preferredHeight: parent.height - topToolButtonRect.height
+
+            contentHeight: 2048
+            contentWidth: MyGuiControlObj.mGuiContentWidth
 
             onWidthChanged:
             {
