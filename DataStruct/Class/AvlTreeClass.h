@@ -8,6 +8,10 @@
 #include <math.h>
 #include "./TreeNodeClass.h"
 
+/*   注：根的层数为1
+ *
+ */
+
 using namespace std;
 
 template < typename NodeCompareValue, typename NodeContentObject >

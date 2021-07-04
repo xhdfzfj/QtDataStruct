@@ -421,6 +421,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
     _tmpTreeLevels = pDestTreeObjP->fun_GetTreeLevels();
     if( _tmpTreeLevels != 0 )
     {
+        //以下计算宽度有误
         _tmpNodeS = static_cast< int >( pow( 2, _tmpTreeLevels ) - 1 );
         _tmpWidth = ( _tmpNodeS * 1.5 ) * _fontWidth;
 
@@ -428,7 +429,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
         {
             mWidth = _tmpWidth;
             setWidth( mWidth );
-            emit MemoryItemWidthChanged();
+            emit MemoryItemWidthChanged();  //发送计算出的宽度已大于屏幕上窗口的宽度
         }
 
         _tmpHeight = _tmpTreeLevels * 4 * _fontHeight + 2 * _fontHeight;
@@ -445,7 +446,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
 
         if( !_tmpNodeSlevel.empty() )
         {
-            sub_DrawAvlTreeToDisplayMap( _tmpNodeSlevel, _tmpFontMetrics );
+            sub_DrawAvlTreeToDisplayMap( _tmpNodeSlevel, _tmpFontMetrics, _tmpTreeLevels );
 
             mDisplayMapP = new QPixmap( mWidth, mHeight );
 
@@ -478,8 +479,9 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
  * @brief MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap
  *      把层遍历的结果显示到 DisplayMap 中
  * @param pDestTreeLevelList
+ *      树的高度（如果只有根节点 树高为 1 ）
  */
-void MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics pFontMetrics )
+void MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics pFontMetrics, int pTreeLevel )
 {
     QString _tmpStr;
     int i, z;
@@ -491,6 +493,26 @@ void MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, 
     QRect * _tmpRectP;
     DrawElementClass * _tmpDrawObjP;
 
+    //新的画法
+    _width = pFontMetrics.horizontalAdvance( "FFFFF" );
+    _height = pFontMetrics.height() + 3;
+
+    _height += ( pTreeLevel - 1 ) * 30; //层与层之间间隔30个像素
+
+    int _newY;
+
+    _newY = _height - pFontMetrics.height();
+    j = pTreeLevel;
+    while( !pDestTreeLevelList.empty() )
+    {
+        z = pow( 2, j - 1 ) - 1;    //层数据在数组中开始的位置
+        i = pow( 2, j - 1 );        //层数据的个数
+
+
+    }
+
+
+    //原来的画法
     i = 1;
     j = 0;
     _height = pFontMetrics.height() + 3;

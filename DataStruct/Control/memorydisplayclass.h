@@ -22,8 +22,8 @@ class MemoryDisplayClass : public QQuickPaintedItem
      * 变量定义
      * ********************************/
 private:
-    int mWidth;
-    int mHeight;
+    int mWidth;                 //当前窗口的宽度
+    int mHeight;                //当前窗口的高度
     uint8_t * mMemoryBlockP;
     uint32_t mMemotryBlockSize;
     QPixmap * mDisplayMapP;
@@ -58,7 +58,7 @@ private:
     void sub_CreateMemoryDisplayElementS( uint8_t * pDataP, uint32_t pDataSize, QSize pDestSize );
     void sub_DrawElementsToPixmap( void );
     void sub_ClearDisplayElementS( void );
-    void sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics mFontMetrics );
+    void sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics mFontMetrics, int pTreeLevel );
 
     /********************************
      * 信号与槽部份
