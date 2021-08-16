@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: your name
  * @Date: 2021-02-22 12:04:08
  * @LastEditTime: 2021-02-24 15:38:04
@@ -159,4 +159,92 @@ uint32_t fun_DataBufToUint32Value( uint8_t * pMemP, uint16_t pMemLen )
     }
 
     return _retValue;
+}
+
+/**
+ * @brief
+ *      对目标数组进行快速排序
+ * @param pDestArrayP
+ * @param pDestCount
+ */
+void sub_SortUint16Array( uint16_t * pDestArrayP, uint16_t pDestCount )
+{
+    uint16_t _middle;
+    uint16_t _tmpU16Value;
+    uint16_t _direct;
+    uint16_t _tmpLen;
+    uint16_t _start, _end;
+
+    if( ( pDestCount == 0 ) || ( pDestCount == 1 ) )
+    {
+        return;
+    }
+    else if( pDestCount == 2 )
+    {
+        if( pDestArrayP[ 0 ] > pDestArrayP[ 1 ] )
+        {
+            _tmpU16Value = pDestArrayP[ 0 ];
+            pDestArrayP[ 0 ] = pDestArrayP[ 1 ];
+            pDestArrayP[ 1 ] = _tmpU16Value;
+        }
+
+        return;
+    }
+
+    _direct = 0;
+    _start = 0;
+    _tmpLen = pDestCount;
+    _end = _tmpLen - 1;
+
+    _middle = pDestArrayP[ _tmpLen >> 1 ];
+
+    if( _middle == 21 )
+    {
+        printf( "test" );
+    }
+
+    while( _start <= _end )
+    {
+        if( _direct == 0 )
+        {
+            if( pDestArrayP[ _start ] >= _middle )
+            {
+                _direct = 1;
+            }
+            else
+            {
+                _start += 1;
+            }
+        }
+        else
+        {
+            if( pDestArrayP[ _end ] <= _middle )
+            {
+                _tmpU16Value = pDestArrayP[ _end ];
+                pDestArrayP[ _end ] = pDestArrayP[ _start ];
+                pDestArrayP[ _start ] = _tmpU16Value;
+                _direct = 0;
+                _start += 1;
+                _end -= 1;
+            }
+            else
+            {
+                _end -= 1;
+            }
+        }
+    }
+
+    if( _start > _end )
+    {
+        _tmpU16Value = _end;
+        _end = _start;
+        _start = _tmpU16Value;
+    }
+    else if( _start == _end )
+    {
+        _start -= 1;
+    }
+
+    sub_SortUint16Array( &pDestArrayP[ 0 ], _start + 1 );
+    sub_SortUint16Array( &pDestArrayP[ _start + 1 ], pDestCount - ( _start + 1 ) );
 }

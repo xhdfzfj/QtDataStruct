@@ -1,4 +1,4 @@
-#include <QGuiApplication>
+﻿#include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "Control/guicontrolclass.h"
@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty( "MyGuiControlObj", &gGuiContrlObj );
 
     engine.load(url);
+
+    sub_TestQuickSort();
 
     return app.exec();
 }

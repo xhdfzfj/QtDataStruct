@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: your name
  * @Date: 2020-10-31 10:40:04
  * @LastEditTime: 2021-02-24 15:29:50
@@ -30,6 +30,13 @@ void FetekMemCpy( void *pDstP, const void *pSrcP, uint32_t pLen );
 uint32_t fun_FindSubStr( uint8_t * pSrcDataP, uint16_t pSrcDataLen, uint8_t * pDestDataP, uint16_t pDestDataLen );
 uint8_t * fun_FindSubChar( uint8_t * pDestP, uint16_t pDestLen, uint8_t pDestValue, uint8_t pOrder );
 uint32_t fun_DataBufToUint32Value( uint8_t * pMemP, uint16_t pMemLen );
- 
+
+#if __cplusplus
+extern "C" {
+#endif
+void sub_SortUint16Array( uint16_t * pDestArrayP, uint16_t pDestCount );
+#if __cplusplus
+}
+#endif
 
 #endif

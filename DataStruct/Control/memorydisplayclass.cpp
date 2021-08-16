@@ -479,7 +479,7 @@ void MemoryDisplayClass::sub_DrawAvlTree( AvlTreeClass<int, int> *pDestTreeObjP,
  * @brief MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap
  *      把层遍历的结果显示到 DisplayMap 中
  * @param pDestTreeLevelList
- *      树的高度（如果只有根节点 树高为 1 ）
+ *      树的高度(如果只有根节点 树高为 1)
  */
 void MemoryDisplayClass::sub_DrawAvlTreeToDisplayMap( list< TreeNodeClass< int, int > * > pDestTreeLevelList, QFontMetrics pFontMetrics, int pTreeLevel )
 {

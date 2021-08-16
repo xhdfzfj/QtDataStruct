@@ -1,4 +1,4 @@
-#ifndef CJSONINTERFACE_H
+﻿#ifndef CJSONINTERFACE_H
 #define CJSONINTERFACE_H
 
 #include <stdint.h>
@@ -9,6 +9,8 @@ extern "C" {
 
 uint8_t * fun_GetCjsonBuf( uint32_t & pRetBufSize );
 void sub_CjsonMemoryChanage( void );
+
+void sub_TestQuickSort( void );
 
 #if __cplusplus
 }
